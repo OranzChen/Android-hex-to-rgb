@@ -1,0 +1,37 @@
+//Android hex color rule is #AARRGGBB,but web hex is #RRGGBB， has no Alpha and just has six numbers,so we need chang ARGB  to RGBA
+
+function hexToRgba(hex) {
+    var bigint, r, g, b, a;
+    //Remove # character
+  var re = /^#?/;
+      var aRgb = hex.replace(re, '');
+      bigint = parseInt(aRgb, 16);
+
+    //If in #FFF format
+  if (aRgb.length == 3) {
+          r = (bigint >> 4) & 255;
+          g = (bigint >> 2) & 255;
+          b = bigint & 255;
+          return "rgba(" + r + "," + g + "," + b + ",1)";
+    }
+
+  //If in #RRGGBB format
+  if (aRgb.length >= 6) {
+          r = (bigint >> 16) & 255;
+          g = (bigint >> 8) & 255;
+          b = bigint & 255;
+          var rgb = r + "," + g + "," + b;
+
+        //If in #AARRBBGG format
+      if (aRgb.length == 8) {
+          a = ((bigint >> 24) & 255) / 255;
+          return "rgba(" + rgb + "," + a.toFixed(1) + ")";
+      }
+  }
+  return "rgba(" + rgb + ",1)";
+}
+
+//demo  get a #AARRGGBB color from Android 
+
+cont color = '#ffc41442'
+console.log(hexToRgba(color))
